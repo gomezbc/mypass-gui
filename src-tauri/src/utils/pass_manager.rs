@@ -14,14 +14,15 @@ const CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\
 const PASSWORD_LEN: usize = 16;
 
 pub fn encrypt_passwd(passwd: &str, key: &str) -> String {
+    let valid_key = to_valid_key(key);
     let fernet =
-        Fernet::new(&key).expect("Invalid key: key must be 32 bytes long and base64 encoded");
+        Fernet::new(valid_key.as_str()).expect("Invalid key: key must be 32 bytes long and base64 encoded");
     let cipherpasswd = fernet.encrypt(passwd.as_bytes());
 
     cipherpasswd
 }
 
-pub fn to_valid_key(key: &str) -> String {
+fn to_valid_key(key: &str) -> String {
     let mut valid_key = String::from(key);
 
     if valid_key.len() < 32 {

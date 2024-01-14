@@ -9,17 +9,15 @@ use crate::{
         master_key_repo::{drop_master_key_collection, find_master_key, insert_master_key},
     },
     models::master_key::MasterKey,
-    utils::pass_manager::{encrypt_passwd, get_plain_passwd, to_valid_key},
+    utils::pass_manager::{encrypt_passwd, get_plain_passwd},
 };
 
 pub fn initialize_key(client: &Client, new_key: &str) {
-    let valid_key = to_valid_key(new_key);
-
-    let master_key_collection = get_master_key_collection(client);
+   let master_key_collection = get_master_key_collection(client);
 
     let owner = std::env::var("USER").unwrap_or(String::from("user"));
 
-    let encrypted_key = encrypt_passwd("master-key", valid_key.as_str());
+    let encrypted_key = encrypt_passwd("master-key", new_key.trim());
 
     let master_key = MasterKey::new(owner, encrypted_key);
 
@@ -44,15 +42,13 @@ pub fn initialize_key(client: &Client, new_key: &str) {
 }
 
 pub fn check_key(client: &Client, key: &str) -> Result<bool, Box<dyn Error>> {
-    let valid_key = to_valid_key(key);
-
     let master_key_collection = get_master_key_collection(client);
     let master_key = find_master_key(&master_key_collection)?;
 
     match master_key.is_some() {
         true => {
             let master_key = master_key.unwrap();
-            let plain_key = get_plain_passwd(master_key.key.as_str(), valid_key.as_str());
+            let plain_key = get_plain_passwd(master_key.key.as_str(), key.trim());
 
             match plain_key {
                 Ok(key) => Ok(key == "master-key"),
