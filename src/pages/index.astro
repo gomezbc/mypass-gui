@@ -1,31 +1,24 @@
 ---
 import "@fontsource-variable/onest";
 import Layout from "../layouts/Layout.astro";
+import Connection from "../components/Connection.svelte";
 ---
 
 <Layout title="Welcome to mypass-gui">
-	<main class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-		<a href="#" class="flex items-center mb-6 text-2xl font-semibold text-white">
-			<img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
-			MyPass    
-		</a>
-		<div class="w-full bg-gray-800 rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 border-gray-700">
-			<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-				<h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
-					Paste your mongodb URI
-				</h1>
-				<form class="space-y-4 md:space-y-6" action="#">
-					<div>
-						<label for="email" class="block mb-2 text-sm font-medium text-white">Your URI</label>
-						<input type="email" name="email" id="email" class="border sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="localhost" required="">
-					</div>
-					<div class="flex justify-center">
-						<button class="cursor-pointer h-10 transition-all bg-sky-600 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 active:border-b-[2px] active:brightness-90 active:translate-y-[2px]">
-							Connect
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</main>
+  <main
+    class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+  >
+    <a
+      href="#"
+      class="flex items-center mb-6 text-2xl font-semibold text-white"
+    >
+      <img
+        class="w-8 h-8 mr-2"
+        src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+        alt="logo"
+      />
+      MyPass
+    </a>
+    <Connection client:visible/>
+  </main>
 </Layout>
