@@ -1,14 +1,14 @@
-use mongodb::sync::Collection;
 use std::error::Error;
 
-use crate::models::{credential::Credential, login::Login};
+use crate::{
+    db::login_repo::LoginRepository,
+    models::{credential::Credential, login::Login},
+};
 
-pub fn remove_credential(
-    domain: &str,
-    credential: &Credential,
-    logins: &Collection<Login>,
-) -> Result<(), Box<dyn Error>> {
-    crate::db::login_repo::remove_credential(domain, credential, logins)?;
+pub fn remove_credential(domain: &str, credential: &Credential) -> Result<(), Box<dyn Error>> {
+    let login = Login::new(domain, vec![credential.clone()]);
+    let login_repo = LoginRepository::new();
+    login_repo.delete(login)?;
     Ok(())
 }
 

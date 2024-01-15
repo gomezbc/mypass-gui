@@ -1,49 +1,43 @@
 use std::error::Error;
 
-use mongodb::sync::Client;
-
 use crate::{
-    db::{
-        connection::{get_logins_collection, get_master_key_collection},
-        login_repo::drop_logins_collection,
-        master_key_repo::{drop_master_key_collection, find_master_key, insert_master_key},
-    },
+    db::{login_repo::LoginRepository, master_key_repo::MasterKeyRepository},
     models::master_key::MasterKey,
     utils::pass_manager::{encrypt_passwd, get_plain_passwd},
 };
 
-pub fn initialize_key(client: &Client, new_key: &str) {
-   let master_key_collection = get_master_key_collection(client);
-
+pub fn initialize_key(new_key: &str) {
     let owner = std::env::var("USER").unwrap_or(String::from("user"));
 
     let encrypted_key = encrypt_passwd("master-key", new_key.trim());
 
     let master_key = MasterKey::new(owner, encrypted_key);
 
-    let res_drop = drop_master_key_collection(&master_key_collection);
+    let master_key_repo = MasterKeyRepository::new();
+
+    let res_drop = master_key_repo.drop_master_key_collection();
     if res_drop.is_err() {
         println!("Failed to drop the master-key collection.");
         std::process::exit(1);
     }
 
-    let res_insert = insert_master_key(&master_key_collection, master_key);
+    let res_insert = master_key_repo.insert(master_key);
     if res_insert.is_err() {
         println!("Failed to insert the master-key.");
         std::process::exit(1);
     }
 
-    let logins_collection = get_logins_collection(client);
-    let res_drop = drop_logins_collection(&logins_collection);
+    let login_repo = LoginRepository::new();
+    let res_drop = login_repo.drop_logins_collection();
     if res_drop.is_err() {
         println!("Failed to drop the logins collection.");
         std::process::exit(1);
     }
 }
 
-pub fn check_key(client: &Client, key: &str) -> Result<bool, Box<dyn Error>> {
-    let master_key_collection = get_master_key_collection(client);
-    let master_key = find_master_key(&master_key_collection)?;
+pub fn check_key(key: &str) -> Result<bool, Box<dyn Error>> {
+    let master_key_repo = MasterKeyRepository::new();
+    let master_key = master_key_repo.find()?;
 
     match master_key.is_some() {
         true => {
@@ -82,7 +76,7 @@ pub fn check_key(client: &Client, key: &str) -> Result<bool, Box<dyn Error>> {
                         println!("The keys don't match.");
                         std::process::exit(0);
                     }
-                    initialize_key(client, new_key.trim());
+                    initialize_key(new_key.trim());
                     std::process::exit(0);
                 }
                 _ => std::process::exit(0),

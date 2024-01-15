@@ -2,10 +2,10 @@ use std::error::Error;
 
 use base64::{engine::general_purpose, Engine};
 use fernet::{self, Fernet};
-use mongodb::sync::Collection;
+
 use rand::Rng;
 
-use crate::{db::login_repo::find_login_by_domain, models::login::Login};
+use crate::{db::login_repo::LoginRepository, models::login::Login};
 
 const CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\
                             abcdefghijklmnopqrstuvwxyz\
@@ -15,8 +15,8 @@ const PASSWORD_LEN: usize = 16;
 
 pub fn encrypt_passwd(passwd: &str, key: &str) -> String {
     let valid_key = to_valid_key(key);
-    let fernet =
-        Fernet::new(valid_key.as_str()).expect("Invalid key: key must be 32 bytes long and base64 encoded");
+    let fernet = Fernet::new(valid_key.as_str())
+        .expect("Invalid key: key must be 32 bytes long and base64 encoded");
     let cipherpasswd = fernet.encrypt(passwd.as_bytes());
 
     cipherpasswd
@@ -45,12 +45,9 @@ pub fn get_plain_passwd(encrypted_passwd: &str, key: &str) -> Result<String, Box
     Ok(String::from_utf8(plain_passwd).unwrap())
 }
 
-pub fn get_plain_credentials(
-    domain: &str,
-    logins: &Collection<Login>,
-    key: &str,
-) -> Result<Option<Login>, Box<dyn Error>> {
-    let login = find_login_by_domain(logins, domain)?;
+pub fn get_plain_credentials(domain: &str, key: &str) -> Result<Option<Login>, Box<dyn Error>> {
+    let login_repo = LoginRepository::new();
+    let login = login_repo.find(domain)?;
     if login.is_none() {
         return Ok(None);
     }

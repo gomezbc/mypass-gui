@@ -6,14 +6,20 @@ use mongodb::{
     sync::{Client, Collection},
 };
 use std::error::Error;
+use std::sync::Mutex;
 use std::time::Duration;
 
 const DB_NAME: &str = "my_pass";
 const LOGINS_COLLECTION: &str = "logins";
 const MASTER_KEY_COLLECTION: &str = "master-key";
 
+static MONGODB_CLIENT: Mutex<Option<Client>> = Mutex::new(None);
+
 pub fn get_db_client() -> Result<Client, Box<dyn Error>> {
     // TODO: Enforce the user to use tls for the connection.
+    if let Some(client) = get_mongodb_client() {
+        return Ok(client);
+    }
     let uri = std::env::var("MONGODB_URI")?;
     let mut client_options = ClientOptions::parse(uri.as_str())?;
     client_options.app_name = Some("my_pass".to_string());
@@ -24,6 +30,11 @@ pub fn get_db_client() -> Result<Client, Box<dyn Error>> {
         .database(DB_NAME)
         .run_command(doc! {"ping": 1}, None)?;
     Ok(client)
+}
+
+fn get_mongodb_client() -> Option<Client> {
+    let mongodb_client = MONGODB_CLIENT.lock().unwrap();
+    mongodb_client.clone()
 }
 
 pub fn get_logins_collection(client: &Client) -> Collection<Login> {
