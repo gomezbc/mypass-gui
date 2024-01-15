@@ -5,10 +5,13 @@ use crate::{
     models::{credential::Credential, login::Login},
 };
 
-pub fn remove_credential(domain: &str, credential: &Credential) -> Result<(), Box<dyn Error>> {
+pub async fn remove_credential(
+    domain: &str,
+    credential: &Credential,
+) -> Result<(), Box<dyn Error>> {
     let login = Login::new(domain, vec![credential.clone()]);
-    let login_repo = LoginRepository::new();
-    login_repo.delete(login)?;
+    let login_repo = LoginRepository::init().await?;
+    login_repo.delete(login).await?;
     Ok(())
 }
 

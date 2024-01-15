@@ -3,7 +3,7 @@ use crate::models::master_key::MasterKey;
 use mongodb::options::ClientOptions;
 use mongodb::{
     bson::doc,
-    sync::{Client, Collection},
+    {Client, Collection},
 };
 use std::error::Error;
 use std::sync::Mutex;
@@ -15,20 +15,21 @@ const MASTER_KEY_COLLECTION: &str = "master-key";
 
 static MONGODB_CLIENT: Mutex<Option<Client>> = Mutex::new(None);
 
-pub fn get_db_client() -> Result<Client, Box<dyn Error>> {
+pub async fn get_db_client() -> Result<Client, Box<dyn Error>> {
     // TODO: Enforce the user to use tls for the connection.
     if let Some(client) = get_mongodb_client() {
         return Ok(client);
     }
     let uri = std::env::var("MONGODB_URI")?;
-    let mut client_options = ClientOptions::parse(uri.as_str())?;
+    let mut client_options = ClientOptions::parse(uri.as_str()).await?;
     client_options.app_name = Some("my_pass".to_string());
     client_options.server_selection_timeout = Some(Duration::from_secs(4)); // Set the timeout duration here
 
     let client = Client::with_options(client_options)?;
     client
         .database(DB_NAME)
-        .run_command(doc! {"ping": 1}, None)?;
+        .run_command(doc! {"ping": 1}, None)
+        .await?;
     Ok(client)
 }
 

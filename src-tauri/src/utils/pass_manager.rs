@@ -45,9 +45,12 @@ pub fn get_plain_passwd(encrypted_passwd: &str, key: &str) -> Result<String, Box
     Ok(String::from_utf8(plain_passwd).unwrap())
 }
 
-pub fn get_plain_credentials(domain: &str, key: &str) -> Result<Option<Login>, Box<dyn Error>> {
-    let login_repo = LoginRepository::new();
-    let login = login_repo.find(domain)?;
+pub async fn get_plain_credentials(
+    domain: &str,
+    key: &str,
+) -> Result<Option<Login>, Box<dyn Error>> {
+    let login_repo = LoginRepository::init().await?;
+    let login = login_repo.find(domain).await?;
     if login.is_none() {
         return Ok(None);
     }

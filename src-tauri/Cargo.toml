@@ -22,11 +22,10 @@ fernet = "0.2.1"
 rand = "0.8.5"
 base64 = "0.21.5"
 rpassword = "7.3.1"
-lazy_static = "1.4.0"
+futures = "0.3.30"
 
 [dependencies.mongodb]
 version = "2.7.1"
-features = ["tokio-sync"]
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.

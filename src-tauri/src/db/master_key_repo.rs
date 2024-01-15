@@ -1,5 +1,5 @@
+use mongodb::Collection;
 use std::error::Error;
-use mongodb::sync::Collection;
 
 use crate::models::master_key::MasterKey;
 
@@ -10,27 +10,26 @@ pub struct MasterKeyRepository {
 }
 
 impl MasterKeyRepository {
-    pub fn new() -> Self {
-        let client = get_db_client();
+    pub async fn init() -> Result<Self, Box<dyn Error>> {
+        let client = get_db_client().await?;
         let collection = client
-            .unwrap()
             .database("my_pass")
             .collection::<MasterKey>("master-key");
-        Self { collection }
+        Ok(Self { collection })
     }
 
-    pub fn insert(&self, master_key: MasterKey) -> Result<(), Box<dyn Error>> {
-        self.collection.insert_one(master_key, None)?;
+    pub async fn insert(&self, master_key: MasterKey) -> Result<(), Box<dyn Error>> {
+        self.collection.insert_one(master_key, None).await?;
         Ok(())
     }
 
-    pub fn find(&self) -> Result<Option<MasterKey>, Box<dyn Error>> {
-        let result = self.collection.find_one(None, None)?;
+    pub async fn find(&self) -> Result<Option<MasterKey>, Box<dyn Error>> {
+        let result = self.collection.find_one(None, None).await?;
         Ok(result)
     }
-    
-    pub fn drop_master_key_collection(&self) -> Result<(), Box<dyn Error>> {
-        self.collection.drop(None)?;
+
+    pub async fn drop_master_key_collection(&self) -> Result<(), Box<dyn Error>> {
+        self.collection.drop(None).await?;
         Ok(())
     }
 }

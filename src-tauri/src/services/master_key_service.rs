@@ -6,38 +6,27 @@ use crate::{
     utils::pass_manager::{encrypt_passwd, get_plain_passwd},
 };
 
-pub fn initialize_key(new_key: &str) {
+pub async fn initialize_key(new_key: &str) -> Result<(), Box<dyn Error>> {
     let owner = std::env::var("USER").unwrap_or(String::from("user"));
 
     let encrypted_key = encrypt_passwd("master-key", new_key.trim());
 
     let master_key = MasterKey::new(owner, encrypted_key);
 
-    let master_key_repo = MasterKeyRepository::new();
+    let master_key_repo = MasterKeyRepository::init().await?;
 
-    let res_drop = master_key_repo.drop_master_key_collection();
-    if res_drop.is_err() {
-        println!("Failed to drop the master-key collection.");
-        std::process::exit(1);
-    }
+    master_key_repo.drop_master_key_collection().await?;
 
-    let res_insert = master_key_repo.insert(master_key);
-    if res_insert.is_err() {
-        println!("Failed to insert the master-key.");
-        std::process::exit(1);
-    }
+    master_key_repo.insert(master_key).await?;
 
-    let login_repo = LoginRepository::new();
-    let res_drop = login_repo.drop_logins_collection();
-    if res_drop.is_err() {
-        println!("Failed to drop the logins collection.");
-        std::process::exit(1);
-    }
+    let login_repo = LoginRepository::init().await?;
+    login_repo.drop_logins_collection().await?;
+    Ok(())
 }
 
-pub fn check_key(key: &str) -> Result<bool, Box<dyn Error>> {
-    let master_key_repo = MasterKeyRepository::new();
-    let master_key = master_key_repo.find()?;
+pub async fn check_key(key: &str) -> Result<bool, Box<dyn Error>> {
+    let master_key_repo = MasterKeyRepository::init().await?;
+    let master_key = master_key_repo.find().await?;
 
     match master_key.is_some() {
         true => {
@@ -76,7 +65,7 @@ pub fn check_key(key: &str) -> Result<bool, Box<dyn Error>> {
                         println!("The keys don't match.");
                         std::process::exit(0);
                     }
-                    initialize_key(new_key.trim());
+                    initialize_key(new_key.trim()).await?;
                     std::process::exit(0);
                 }
                 _ => std::process::exit(0),
