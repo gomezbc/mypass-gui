@@ -2,12 +2,12 @@
     import { invoke } from '@tauri-apps/api/tauri'
   
     let uri :String = '';
-    let resMsg :String = 'asd';
+    let resMsg :String = '';
   
     function connect() {
+        resMsg = 'Connecting...';
         invoke('connect_to_db', { inputUri : uri }).then((res) => { 
-            console.log(res)
-            
+            resMsg = res as String;
         })
     }
 </script>
@@ -31,7 +31,7 @@
               name="uri"
               id="uri"
               class="border sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="localhost"
+              placeholder="mongodb://[username]:[password]@[host]:[port]/"
               bind:value={uri}
               required={true}
             />
@@ -44,7 +44,7 @@
               Connect
             </button>
           </div>
-          <p class="text-center h-2">{resMsg}</p>
+          <p class="text-center h-2 text-white font-semibold">{resMsg}</p>
         </div>
       </div>
     </div>
