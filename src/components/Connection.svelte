@@ -8,6 +8,8 @@
         resMsg = 'Connecting...';
         invoke('connect_to_db', { inputUri : uri }).then((res) => { 
             resMsg = res as String;
+            if (resMsg == 'Connection successful') 
+              window.location.href = '/dashboard';
         })
     }
 </script>
