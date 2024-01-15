@@ -5,13 +5,11 @@ use mongodb::sync::Collection;
 
 use crate::models::login::Login;
 
-use super::Repository;
-
 pub struct LoginRepository {
     collection: Collection<Login>,
 }
 
-impl Repository<Login> for LoginRepository {
+impl LoginRepository {
     fn init(&self) -> Result<(), Box<dyn Error>> {
         todo!()
     }
