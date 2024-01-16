@@ -37,9 +37,9 @@
       <hr />
       {#each credentials as credential}
         <div class="w-full grid grid-cols-3 px-2 py-1">
-          <span class="overflow-scroll">{credential.email}</span>
-          <span class="overflow-scroll">{credential.username}</span>
-          <span class="overflow-scroll flex items-center"
+          <span class="overflow-scroll mx-1">{credential.email}</span>
+          <span class="overflow-scroll mx-1">{credential.username}</span>
+          <span class="overflow-scroll mx-1 flex items-center"
             >{credential.password}
             <button>
               <Show className="size-4 ml-2" />
