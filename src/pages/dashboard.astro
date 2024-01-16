@@ -1,19 +1,21 @@
 ---
-import Table from "@/components/Table.svelte";
 import Layout from "@/layouts/Layout.astro";
 import AddCredential from "@/components/icons/addCredential.astro";
+import CredentialsList from "@/components/CredentialsList.astro";
 ---
 
 <Layout title="Home page">
   <main
-    class="bg-[#181a1b] flex flex-col items-center justify-center md:h-screen md:w-screen lg:py-0"
+    class="bg-[#181a1b] flex flex-col items-center justify-center h-screen w-screen lg:py-0"
   >
     <section class="mx-10 w-4/6 h-5/6 rounded-lg flex flex-col items-center">
       <div class="w-full mt-10 grid grid-cols-3 gap-4">
         <h1 class="col-span-2 text-2xl font-bold text-[#cac6bf]">
           Credentials list
         </h1>
-        <div class="col-span-1 w-fit p-2 rounded-lg flex items-center border hover:bg-neutral-700/5">
+        <div
+          class="col-span-1 w-fit p-2 rounded-lg flex items-center border hover:bg-[#2a2c2d]"
+        >
           <AddCredential class="size-5 mr-2" />
           <button class="text-sm font-semibold text-[#e8e6e3]"
             >ADD CREDENTIAL</button
@@ -29,6 +31,9 @@ import AddCredential from "@/components/icons/addCredential.astro";
             placeholder="Search for a credential"
           />
         </div>
+      </div>
+      <div class="w-full max-h-44 mt-10">
+        <CredentialsList />
       </div>
     </section>
   </main>
