@@ -1,6 +1,6 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
-  import ArrowDown from "@/components/icons/arrowDown.svelte";
+  import ArrowDown from "@/components/icons/ArrowDown.svelte";
 
   export let domain: string;
   export let email: string;
@@ -15,7 +15,7 @@
 </script>
 
 <li>
-  <button class="flex items-center" on:click={toggleDropdown}>
+  <button class="w-full flex items-center border rounded-lg px-2 py-1" on:click={toggleDropdown}>
     <ArrowDown className="size-3" />
     <span class="ml-2">{domain}</span>
   </button>
