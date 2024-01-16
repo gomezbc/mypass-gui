@@ -1,20 +1,35 @@
 ---
-import Layout from "@/layouts/Layout.astro"
+import Table from "@/components/Table.svelte";
+import Layout from "@/layouts/Layout.astro";
+import AddCredential from "@/components/icons/addCredential.astro";
 ---
+
 <Layout title="Home page">
-    <main
-      class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
-    >
-      <a
-        href="#"
-        class="flex items-center mb-6 text-2xl font-semibold text-white"
-      >
-        <img
-          class="w-8 h-8 mr-2"
-          src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-          alt="logo"
-        />
-        MyPass
-      </a>
-    </main>
-  </Layout>
+  <main
+    class="bg-[#181a1b] flex flex-col items-center justify-center md:h-screen md:w-screen lg:py-0"
+  >
+    <section class="mx-10 w-4/6 h-5/6 rounded-lg flex flex-col items-center">
+      <div class="w-full mt-10 grid grid-cols-3 gap-4">
+        <h1 class="col-span-2 text-2xl font-bold text-[#cac6bf]">
+          Credentials list
+        </h1>
+        <div class="col-span-1 w-fit p-2 rounded-lg flex items-center border hover:bg-neutral-700/5">
+          <AddCredential class="size-5 mr-2" />
+          <button class="text-sm font-semibold text-[#e8e6e3]"
+            >ADD CREDENTIAL</button
+          >
+        </div>
+        <h3 class="col-span-2 font-semibold text-[#8b847c]">
+          See all information about your logins
+        </h3>
+        <div class="col-span-1">
+          <input
+            type="text"
+            class="h-10 px-3 mb-2 text-base text-[#e8e6e3] placeholder-[#8b847c] bg-[#2a2c2d] border border-[#8b847c] rounded-lg focus:outline-none focus:border-[#8b847c]"
+            placeholder="Search for a credential"
+          />
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
