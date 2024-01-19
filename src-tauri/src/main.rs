@@ -9,7 +9,10 @@ pub mod utils;
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![commands::connect_to_db,])
+        .invoke_handler(tauri::generate_handler![
+            commands::connect_to_db,
+            commands::get_logins
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

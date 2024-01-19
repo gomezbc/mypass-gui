@@ -5,8 +5,8 @@
 
   type Credential = {
     email: string;
-    username: string;
-    password: string;
+    usr: string;
+    pass: string;
   };
 
   export let domain: string;
@@ -38,9 +38,9 @@
       {#each credentials as credential}
         <div class="w-full grid grid-cols-3 px-2 py-1">
           <span class="overflow-scroll mx-1">{credential.email}</span>
-          <span class="overflow-scroll mx-1">{credential.username}</span>
+          <span class="overflow-scroll mx-1">{credential.usr}</span>
           <span class="overflow-scroll mx-1 flex items-center"
-            >{credential.password}
+            >{credential.pass}
             <button>
               <Show className="size-4 ml-2" />
             </button>

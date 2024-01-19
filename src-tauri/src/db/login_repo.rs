@@ -8,6 +8,7 @@ use crate::models::login::Login;
 
 use super::connection::get_db_client;
 
+#[derive(Debug)]
 pub struct LoginRepository {
     collection: Collection<Login>,
 }
