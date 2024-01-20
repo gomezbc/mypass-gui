@@ -8,13 +8,13 @@ import CredentialsList from "@/components/CredentialsList.svelte";
   <main
     class="bg-[#181a1b] flex flex-col items-center justify-center h-screen w-screen lg:py-0"
   >
-    <section class="mx-10 w-4/6 h-5/6 rounded-lg flex flex-col items-center">
+    <section class="mx-10 w-7/12 h-5/6 rounded-lg flex flex-col items-center">
       <div class="w-full mt-10 grid grid-cols-3 gap-4">
         <h1 class="col-span-2 text-2xl font-bold text-[#cac6bf]">
           Credentials list
         </h1>
         <div
-          class="col-span-1 w-fit p-2 rounded-lg flex items-center border hover:bg-[#2a2c2d]"
+          class="col-span-1 w-fit p-2 rounded-lg flex items-center justify-self-end border hover:bg-[#2a2c2d]"
         >
           <AddCredential class="size-5 mr-2" />
           <button class="text-sm font-semibold text-[#e8e6e3]"
@@ -24,7 +24,7 @@ import CredentialsList from "@/components/CredentialsList.svelte";
         <h3 class="col-span-2 font-semibold text-[#8b847c]">
           See all information about your logins
         </h3>
-        <div class="col-span-1">
+        <div class="col-span-1 justify-self-end">
           <input
             type="text"
             class="h-10 px-3 mb-2 text-base text-[#e8e6e3] placeholder-[#8b847c] bg-[#2a2c2d] border border-[#8b847c] rounded-lg focus:outline-none focus:border-[#8b847c]"
@@ -32,7 +32,7 @@ import CredentialsList from "@/components/CredentialsList.svelte";
           />
         </div>
       </div>
-      <div class="w-full max-h-44 mt-10">
+      <div class="w-10/12 max-h-44 mt-10 flex justify-center">
         <CredentialsList client:only />
       </div>
     </section>
