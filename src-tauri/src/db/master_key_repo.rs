@@ -5,6 +5,7 @@ use crate::models::master_key::MasterKey;
 
 use super::connection::get_db_client;
 
+#[derive(Debug)]
 pub struct MasterKeyRepository {
     collection: Collection<MasterKey>,
 }

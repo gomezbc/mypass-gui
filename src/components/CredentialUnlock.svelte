@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Button, Label, Input, Spinner } from "flowbite-svelte";
   import { invoke } from "@tauri-apps/api/tauri";
+  import { masterKeyStore } from '@/stores/masterKeyStore';
   import Lock from "./icons/Lock.svelte";
   import Unlock from "./icons/Unlock.svelte";
 
@@ -11,7 +12,17 @@
     event.preventDefault();
     unlocking = true;
     unlockBtnMsg = "Unlocking...";
-    //const res = await invoke("unlock_credentials", { password });
+    let password = (event.target as HTMLFormElement).password.value;
+    console.log(password);
+    await invoke("check_master_key", { key: password })
+      .then((result) => {
+        if (result) {
+          masterKeyStore.set(password);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     // handle the response...
     unlocking = false;
     unlockBtnMsg = "Unlock";

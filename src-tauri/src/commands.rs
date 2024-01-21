@@ -1,6 +1,6 @@
 use crate::{
     db::{connection::get_db_client, login_repo::LoginRepository},
-    models::login::Login,
+    models::login::Login, services::master_key_service::check_key,
 };
 
 #[tauri::command]
@@ -35,4 +35,15 @@ pub async fn get_logins() -> Result<Vec<Login>, String> {
     println!("Logins found, {:?}", logins.as_ref());
     let logins = logins.unwrap();
     Ok(logins.unwrap_or(vec![]))
+}
+
+#[tauri::command]
+pub async fn check_master_key(key: String) -> Result<bool, String> {
+    println!("Checking master key: {}", key);
+    let is_mater_key = check_key(key.as_str()).await.map_err(|_| Into::<String>::into("Error checking the master key"));
+    if is_mater_key.is_err() {
+        return Err(is_mater_key.unwrap_err());
+    }
+    println!("Master key is valid: {}", is_mater_key.as_ref().unwrap());
+    Ok(is_mater_key.unwrap())
 }

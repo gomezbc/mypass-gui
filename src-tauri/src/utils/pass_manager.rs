@@ -22,7 +22,7 @@ pub fn encrypt_passwd(passwd: &str, key: &str) -> String {
     cipherpasswd
 }
 
-fn to_valid_key(key: &str) -> String {
+pub fn to_valid_key(key: &str) -> String {
     let mut valid_key = String::from(key);
 
     if valid_key.len() < 32 {

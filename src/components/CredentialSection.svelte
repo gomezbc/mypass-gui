@@ -1,5 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
+  import { masterKeyStore } from "@/stores/masterKeyStore";
   import CredentialFooter from "./CredentialFooter.svelte";
   import CredentialHeader from "./CredentialHeader.svelte";
   import CredentialTable from "./CredentialTable.svelte";
@@ -18,13 +19,24 @@
   let logins: Login[] = [];
   let isLoading = true;
 
-  if(!isLocked) {
+  function loadLogins() {
     getLogins().then((result) => {
       isLoading = true;
       logins = result;
       isLoading = false;
     });
   }
+
+  loadLogins();
+
+  let masterKey: String = "";
+  masterKeyStore.subscribe((value) => {
+    masterKey = value;
+    if(masterKey.trim() != ''){
+      isLocked = false;
+      loadLogins();
+    }
+  });
 </script>
 
 <!-- Table Section -->
