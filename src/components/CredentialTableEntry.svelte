@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Copy from "./icons/Copy.svelte";
   import Show from "./icons/Show.svelte";
   import { type Credential } from "@/types/Credential";
 
@@ -28,6 +29,15 @@
     } else {
       shownCredentials[index].pass = credentials[index].pass;
     }
+  }
+
+  function copyPassword(credential: Credential) {
+    let index = shownCredentials.findIndex(
+      (shownCredential) =>
+        shownCredential.email === credential.email &&
+        shownCredential.usr === credential.usr
+    );
+    navigator.clipboard.writeText(credentials[index].pass);
   }
 </script>
 
@@ -62,6 +72,12 @@
           class="ml-2 text-black/70 dark:text-white"
           ><Show className="size-6" /></button
         >
+        <button
+          on:click={() => copyPassword(credential)}
+          class="ml-2 text-black/70 dark:text-white"
+        >
+          <Copy className="size-5" />
+        </button>
       </div>
     </td>
     <td class="h-px w-px whitespace-nowrap">
