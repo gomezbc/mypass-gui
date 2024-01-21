@@ -1,6 +1,6 @@
 <script lang="ts">
   import CredentialFooter from "./CredentialFooter.svelte";
-import CredentialHeader from "./CredentialHeader.svelte";
+  import CredentialHeader from "./CredentialHeader.svelte";
   import CredentialTable from "./CredentialTable.svelte";
 </script>
 
