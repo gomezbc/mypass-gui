@@ -1,7 +1,32 @@
 <script lang="ts">
+  import { invoke } from "@tauri-apps/api/tauri";
   import CredentialFooter from "./CredentialFooter.svelte";
   import CredentialHeader from "./CredentialHeader.svelte";
   import CredentialTable from "./CredentialTable.svelte";
+
+  import {type Login} from "@/types/Login";
+  import {type Credential} from "@/types/Credential";
+  
+
+  async function getLogins(): Promise<Login[]> {
+    let logins = (await invoke("get_logins")) as Login[];
+    console.log(logins);
+    return logins;
+  }
+
+  let logins: Login[] = [];
+  let isLoading = true;
+
+  getLogins().then((result) => {
+    isLoading = true;
+    logins = result;
+    logins.forEach((login) => {
+      login.credentials.forEach((credential) => {
+        credential.pass = "•".repeat(10);
+      });
+    });
+    isLoading = false;
+  });
 </script>
 
 <!-- Table Section -->
@@ -14,8 +39,8 @@
           class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-slate-900 dark:border-gray-700"
         >
           <CredentialHeader />
-          <CredentialTable />
-          <CredentialFooter />
+          <CredentialTable logins={logins}/>
+          <CredentialFooter loginNum={logins.length} />
         </div>
       </div>
     </div>

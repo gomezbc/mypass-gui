@@ -1,9 +1,12 @@
+<script lang="ts">
+  export let loginNum: number = 0;
+</script>
 <div
   class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700"
 >
   <div>
     <p class="text-sm text-gray-600 dark:text-gray-400">
-      <span class="font-semibold text-gray-800 dark:text-gray-200">6</span> results
+      <span class="font-semibold text-gray-800 dark:text-gray-200">{loginNum}</span> results
     </p>
   </div>
 
