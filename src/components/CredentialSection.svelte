@@ -20,11 +20,6 @@
   getLogins().then((result) => {
     isLoading = true;
     logins = result;
-    logins.forEach((login) => {
-      login.credentials.forEach((credential) => {
-        credential.pass = "•".repeat(10);
-      });
-    });
     isLoading = false;
   });
 </script>

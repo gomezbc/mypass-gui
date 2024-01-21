@@ -4,9 +4,34 @@
 
   export let domain: string;
   export let credentials: Credential[];
+
+  let shownCredentials = credentials;
+
+  shownCredentials = shownCredentials.map((credential) => {
+    return {
+      ...credential,
+      pass: "********",
+    };
+  });
+
+  let hidden: boolean = true;
+
+  function showPassword(credential: Credential) {
+    hidden = !hidden;
+    let index = shownCredentials.findIndex(
+      (shownCredential) =>
+        shownCredential.email === credential.email &&
+        shownCredential.usr === credential.usr
+    );
+    if (hidden) {
+      shownCredentials[index].pass = "********";
+    } else {
+      shownCredentials[index].pass = credentials[index].pass;
+    }
+  }
 </script>
 
-{#each credentials as credential}
+{#each shownCredentials as credential}
   <tr>
     <td class="h-px w-px whitespace-nowrap">
       <div class="ps-6 lg:ps-3 xl:ps-3 pe-6 py-3">
@@ -32,7 +57,9 @@
     <td class="h-px w-px whitespace-nowrap">
       <div class="px-6 py-3 inline-flex items-center">
         {credential.pass}
-        <button class="ml-2 text-black/70 dark:text-white"
+        <button
+          on:click={() => showPassword(credential)}
+          class="ml-2 text-black/70 dark:text-white"
           ><Show className="size-6" /></button
         >
       </div>
