@@ -65,7 +65,9 @@
       </div>
     </td>
     <td class="h-px w-px whitespace-nowrap">
-      <div class="px-6 py-3 inline-flex items-center">
+      <div
+        class="px-6 py-3 inline-flex items-center text-black/70 dark:text-white"
+      >
         {credential.pass}
         <button
           on:click={() => showPassword(credential)}
