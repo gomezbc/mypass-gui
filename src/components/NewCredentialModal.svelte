@@ -58,6 +58,6 @@
       <span>Your password</span>
       <Input type="password" name="password" placeholder="••••••••" required />
     </Label>
-    <Button color="blue" type="submit" class="w-full1">Add Credential</Button>
+    <Button color="blue" type="submit" class="w-full">Add Credential</Button>
   </form>
 </Modal>
