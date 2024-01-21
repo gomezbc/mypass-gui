@@ -1,6 +1,6 @@
 use crate::{
-    db::{connection::get_db_client, login_repo::LoginRepository},
-    models::login::Login, services::master_key_service::check_key,
+    db::connection::get_db_client,
+    models::login::Login, services::master_key_service::check_key, utils::pass_manager::get_plain_credentials,
 };
 
 #[tauri::command]
@@ -22,13 +22,8 @@ pub async fn connect_to_db(input_uri: String) -> String {
 }
 
 #[tauri::command]
-pub async fn get_logins() -> Result<Vec<Login>, String> {
-    let login_repo = LoginRepository::init().await.map_err(|_| Into::<String>::into("Error initializing login repository"));
-    if login_repo.is_err() {
-        return Err(login_repo.unwrap_err());
-    }
-    let login_repo = login_repo.unwrap();
-    let logins = login_repo.find_all().await.map_err(|_| Into::<String>::into("Error getting logins"));
+pub async fn get_logins(key: String) -> Result<Vec<Login>, String> {
+    let logins = get_plain_credentials(key.as_str()).await.map_err(|_| Into::<String>::into("Error getting logins"));
     if logins.is_err() {
         return Err(logins.unwrap_err());
     }

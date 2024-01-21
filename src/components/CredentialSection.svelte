@@ -4,14 +4,15 @@
   import CredentialFooter from "./CredentialFooter.svelte";
   import CredentialHeader from "./CredentialHeader.svelte";
   import CredentialTable from "./CredentialTable.svelte";
-
+  
   import { type Login } from "@/types/Login";
   import CredentialUnlock from "./CredentialUnlock.svelte";
-
+  
+  let masterKey: String = "";
   let isLocked: boolean = true;
 
   async function getLogins(): Promise<Login[]> {
-    let logins = (await invoke("get_logins")) as Login[];
+    let logins = (await invoke("get_logins", { key: masterKey })) as Login[];
     console.log(logins);
     return logins;
   }
@@ -27,12 +28,9 @@
     });
   }
 
-  loadLogins();
-
-  let masterKey: String = "";
   masterKeyStore.subscribe((value) => {
     masterKey = value;
-    if(masterKey.trim() != ''){
+    if (masterKey.trim() != "") {
       isLocked = false;
       loadLogins();
     }

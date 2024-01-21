@@ -45,20 +45,20 @@ pub fn get_plain_passwd(encrypted_passwd: &str, key: &str) -> Result<String, Box
     Ok(String::from_utf8(plain_passwd).unwrap())
 }
 
-pub async fn get_plain_credentials(
-    domain: &str,
-    key: &str,
-) -> Result<Option<Login>, Box<dyn Error>> {
+pub async fn get_plain_credentials(key: &str) -> Result<Option<Vec<Login>>, Box<dyn Error>> {
+    let valid_key = to_valid_key(key);
     let login_repo = LoginRepository::init().await?;
-    let login = login_repo.find(domain).await?;
+    let login = login_repo.find_all().await?;
     if login.is_none() {
         return Ok(None);
     }
     let mut login = login.unwrap();
-    login.credentials.iter_mut().for_each(|c| {
-        let plain_passwd =
-            get_plain_passwd(c.pass.as_str(), key).expect("Error decrypting password");
-        c.pass = plain_passwd;
+    login.iter_mut().for_each(|l| {
+        l.credentials.iter_mut().for_each(|c| {
+            let plain_passwd =
+                get_plain_passwd(c.pass.as_str(), valid_key.as_str()).expect("Error decrypting password");
+            c.pass = plain_passwd;
+        })
     });
     Ok(Some(login))
 }
