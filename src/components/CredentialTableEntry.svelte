@@ -6,6 +6,9 @@
   export let domain: string;
   export let credentials: Credential[];
 
+  let copyPasswordTooltip: string = "Copy password";
+  let showPasswordTooltip: string = "Show password";
+
   let shownCredentials = credentials;
 
   shownCredentials = shownCredentials.map((credential) => {
@@ -19,6 +22,11 @@
 
   function showPassword(credential: Credential) {
     hidden = !hidden;
+    if (hidden) {
+      showPasswordTooltip = "Show password";
+    } else {
+      showPasswordTooltip = "Hide password";
+    }
     let index = shownCredentials.findIndex(
       (shownCredential) =>
         shownCredential.email === credential.email &&
@@ -38,6 +46,7 @@
         shownCredential.usr === credential.usr
     );
     navigator.clipboard.writeText(credentials[index].pass);
+    copyPasswordTooltip = "Copied!";
   }
 </script>
 
@@ -69,17 +78,67 @@
         class="px-6 py-3 inline-flex items-center text-black/70 dark:text-white"
       >
         {credential.pass}
-        <button
-          on:click={() => showPassword(credential)}
-          class="ml-2 text-black/70 dark:text-white"
-          ><Show className="size-6" /></button
-        >
-        <button
-          on:click={() => copyPassword(credential)}
-          class="ml-2 text-black/70 dark:text-white"
-        >
-          <Copy className="size-5" />
-        </button>
+        <div>
+          <span class="group relative">
+            <div
+              class="absolute bottom-[calc(100%+0.5rem)] left-[50%] -translate-x-[50%] hidden group-hover:block w-auto"
+            >
+              <div
+                class="bottom-full right-0 rounded bg-black px-4 py-1 text-sm text-white dark:bg-gray-200 dark:text-black/70 whitespace-nowrap"
+              >
+                {showPasswordTooltip}
+                <svg
+                  class="absolute left-0 top-full h-2 w-full text-black dark:text-gray-200"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 255 255"
+                  xml:space="preserve"
+                  ><polygon
+                    class="fill-current"
+                    points="0,0 127.5,127.5 255,0"
+                  /></svg
+                >
+              </div>
+            </div>
+            <button
+              on:click={() => showPassword(credential)}
+              class="ml-2 text-black/70 dark:text-white"
+              ><Show className="size-6" /></button
+            >
+          </span>
+        </div>
+        <div>
+          <span class="group relative">
+            <div
+              class="absolute bottom-[calc(100%+0.5rem)] left-[50%] -translate-x-[50%] hidden group-hover:block w-auto"
+            >
+              <div
+                class="bottom-full right-0 rounded bg-black px-4 py-1 text-sm text-white dark:bg-gray-200 dark:text-black/70 whitespace-nowrap"
+              >
+                {copyPasswordTooltip}
+                <svg
+                  class="absolute left-0 top-full h-2 w-full text-black dark:text-gray-200"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 255 255"
+                  xml:space="preserve"
+                  ><polygon
+                    class="fill-current"
+                    points="0,0 127.5,127.5 255,0"
+                  /></svg
+                >
+              </div>
+            </div>
+            <button
+              on:click={() => copyPassword(credential)}
+              on:mouseout={() => (copyPasswordTooltip = "Copy password")}
+              on:blur={() => (copyPasswordTooltip = "Copy password")}
+              class="ml-2 text-black/70 dark:text-white"
+            >
+              <Copy className="size-5" />
+            </button>
+          </span>
+        </div>
       </div>
     </td>
     <td class="h-px w-px whitespace-nowrap">
