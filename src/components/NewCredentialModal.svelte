@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
   import { Button, Modal, Label, Input } from "flowbite-svelte";
   let formModal = false;
+  export let disableButtons: boolean;
 </script>
 
-<Button color="blue" on:click={() => (formModal = true)}>
+<Button color="blue" on:click={() => (formModal = true)} disabled={disableButtons}>
   <svg
     class="flex-shrink-0 w-3 h-3"
     xmlns="http://www.w3.org/2000/svg"

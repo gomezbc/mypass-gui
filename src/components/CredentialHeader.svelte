@@ -1,5 +1,6 @@
-<script>
+<script lang="ts">
   import NewCredentialModal from "./NewCredentialModal.svelte";
+  export let disableButtons: boolean;
 </script>
 
 <div
@@ -22,7 +23,7 @@
       >
         View all
       </a>
-      <NewCredentialModal />
+      <NewCredentialModal disableButtons={disableButtons}/>
     </div>
   </div>
 </div>

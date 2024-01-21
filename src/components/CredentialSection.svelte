@@ -4,9 +4,10 @@
   import CredentialHeader from "./CredentialHeader.svelte";
   import CredentialTable from "./CredentialTable.svelte";
 
-  import {type Login} from "@/types/Login";
-  import {type Credential} from "@/types/Credential";
-  
+  import { type Login } from "@/types/Login";
+  import CredentialUnlock from "./CredentialUnlock.svelte";
+
+  let isLocked: boolean = true;
 
   async function getLogins(): Promise<Login[]> {
     let logins = (await invoke("get_logins")) as Login[];
@@ -17,11 +18,13 @@
   let logins: Login[] = [];
   let isLoading = true;
 
-  getLogins().then((result) => {
-    isLoading = true;
-    logins = result;
-    isLoading = false;
-  });
+  if(!isLocked) {
+    getLogins().then((result) => {
+      isLoading = true;
+      logins = result;
+      isLoading = false;
+    });
+  }
 </script>
 
 <!-- Table Section -->
@@ -33,9 +36,15 @@
         <div
           class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-slate-900 dark:border-gray-700"
         >
-          <CredentialHeader />
-          <CredentialTable logins={logins}/>
-          <CredentialFooter loginNum={logins.length} />
+          {#if isLocked}
+            <CredentialHeader disableButtons={true} />
+            <CredentialUnlock />
+            <CredentialFooter loginNum={0} />
+          {:else}
+            <CredentialHeader disableButtons={false} />
+            <CredentialTable {logins} />
+            <CredentialFooter loginNum={logins.length} />
+          {/if}
         </div>
       </div>
     </div>
