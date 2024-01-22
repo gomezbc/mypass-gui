@@ -5,6 +5,12 @@ use crate::{
     models::{credential::Credential, login::Login},
 };
 
+pub async fn insert_login(login: Login) -> Result<(), Box<dyn Error>> {
+    let login_repo = LoginRepository::init().await?;
+    login_repo.insert(login).await?;
+    Ok(())
+}
+
 pub async fn remove_credential(
     domain: &str,
     credential: &Credential,

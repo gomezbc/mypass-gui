@@ -13,6 +13,7 @@ fn main() {
             commands::connect_to_db,
             commands::get_logins,
             commands::check_master_key,
+            commands::add_login,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

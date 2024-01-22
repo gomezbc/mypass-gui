@@ -1,9 +1,10 @@
 <script lang="ts">
   import { Button, Label, Input, Spinner } from "flowbite-svelte";
   import { invoke } from "@tauri-apps/api/tauri";
-  import { masterKeyStore } from "@/stores/masterKeyStore";
   import Lock from "./icons/Lock.svelte";
   import Unlock from "./icons/Unlock.svelte";
+  import { sharedStateStore } from "@/stores/sharedStateStore";
+  import { State } from "@/enums/State";
 
   let unlocking: boolean = false;
   let isPasswordCorrect: boolean = true;
@@ -17,7 +18,7 @@
       .then((result) => {
         if (result === true) {
           isPasswordCorrect = true;
-          masterKeyStore.set(password);
+          sharedStateStore.set(State.UNLOCKED);
         } else {
           isPasswordCorrect = false;
         }

@@ -1,18 +1,18 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { masterKeyStore } from "@/stores/masterKeyStore";
   import CredentialFooter from "./CredentialFooter.svelte";
   import CredentialHeader from "./CredentialHeader.svelte";
   import CredentialTable from "./CredentialTable.svelte";
 
   import { type Login } from "@/types/Login";
   import CredentialUnlock from "./CredentialUnlock.svelte";
+  import { sharedStateStore } from "@/stores/sharedStateStore";
+  import { State } from "@/enums/State";
 
-  let masterKey: String = "";
   let isLocked: boolean = true;
 
   async function getLogins(): Promise<Login[]> {
-    let logins = (await invoke("get_logins", { key: masterKey })) as Login[];
+    let logins = (await invoke("get_logins")) as Login[];
     loginsNum = logins.reduce(
       (acc, login) => acc + numOfcredentialsInLogin(login),
       0
@@ -33,11 +33,22 @@
     });
   }
 
-  masterKeyStore.subscribe((value) => {
-    masterKey = value;
-    if (masterKey.trim() != "") {
-      isLocked = false;
-      loadLogins();
+  sharedStateStore.subscribe((value) => {
+    switch (value) {
+      case State.RELOAD:
+        isLocked = false;
+        loadLogins();
+        break;
+      case State.UNLOCKED:
+        isLocked = false;
+        loadLogins();
+        break;
+      case State.LOCKED:
+        isLocked = true;
+        logins = [];
+        break;
+      default:
+        break;
     }
   });
 </script>
