@@ -4,25 +4,30 @@
   import CredentialFooter from "./CredentialFooter.svelte";
   import CredentialHeader from "./CredentialHeader.svelte";
   import CredentialTable from "./CredentialTable.svelte";
-  
+
   import { type Login } from "@/types/Login";
   import CredentialUnlock from "./CredentialUnlock.svelte";
-  
+
   let masterKey: String = "";
   let isLocked: boolean = true;
 
   async function getLogins(): Promise<Login[]> {
     let logins = (await invoke("get_logins", { key: masterKey })) as Login[];
-    console.log(logins);
+    loginsNum = logins.reduce(
+      (acc, login) => acc + numOfcredentialsInLogin(login),
+      0
+    );
     return logins;
   }
 
   let logins: Login[] = [];
-  let isLoading = true;
+  let numOfcredentialsInLogin = (login: Login) => login.credentials.length;
+  let loginsNum: number = 0;
+  let isLoading = false;
 
   function loadLogins() {
+    isLoading = true;
     getLogins().then((result) => {
-      isLoading = true;
       logins = result;
       isLoading = false;
     });
@@ -53,7 +58,7 @@
           {:else}
             <CredentialHeader disableButtons={false} />
             <CredentialTable {logins} />
-            <CredentialFooter loginNum={logins.length} />
+            <CredentialFooter loginNum={loginsNum} />
           {/if}
         </div>
       </div>

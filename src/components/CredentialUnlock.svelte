@@ -1,31 +1,31 @@
 <script lang="ts">
   import { Button, Label, Input, Spinner } from "flowbite-svelte";
   import { invoke } from "@tauri-apps/api/tauri";
-  import { masterKeyStore } from '@/stores/masterKeyStore';
+  import { masterKeyStore } from "@/stores/masterKeyStore";
   import Lock from "./icons/Lock.svelte";
   import Unlock from "./icons/Unlock.svelte";
 
   let unlocking: boolean = false;
-  let unlockBtnMsg: String = unlocking ? "Unlocking..." : "Unlock";
+  let isPasswordCorrect: boolean = true;
 
   async function handleSubmit(event: Event) {
     event.preventDefault();
     unlocking = true;
-    unlockBtnMsg = "Unlocking...";
     let password = (event.target as HTMLFormElement).password.value;
     console.log(password);
     await invoke("check_master_key", { key: password })
       .then((result) => {
-        if (result) {
+        if (result === true) {
+          isPasswordCorrect = true;
           masterKeyStore.set(password);
+        } else {
+          isPasswordCorrect = false;
         }
       })
       .catch((err) => {
         console.log(err);
       });
-    // handle the response...
     unlocking = false;
-    unlockBtnMsg = "Unlock";
   }
 </script>
 
@@ -43,6 +43,9 @@
     <Label class="space-y-2">
       <span>Your password</span>
       <Input type="password" name="password" required />
+      {#if !isPasswordCorrect}
+        <span class="text-red-500">Wrong password</span>
+      {/if}
     </Label>
     <Button color="blue" type="submit" class="mt-4">
       {#if unlocking}
@@ -50,7 +53,7 @@
       {:else}
         <Unlock className="size-4 mr-2" />
       {/if}
-      <span class="text-lg">{unlockBtnMsg}</span></Button
+      <span class="text-lg">{unlocking ? "Unlocking..." : "Unlock"}</span></Button
     >
   </form>
 </div>

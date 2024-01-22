@@ -36,14 +36,17 @@ pub async fn check_key(key: &str) -> Result<bool, Box<dyn Error>> {
 
             match plain_key {
                 Ok(key) => Ok(key == "master-key"),
-                Err(_) => Err(Box::new(std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    "Failed to decrypt the master-key.",
-                ))),
+                Err(e) => {
+                    if e.to_string().contains("Fernet decryption error") {
+                        return Ok(false);
+                    }
+                    Err(Box::new(std::io::Error::new(
+                        std::io::ErrorKind::Other,
+                        "Failed to decrypt the master-key.",
+                    )))
+                }
             }
         }
-        false => {
-            Err("No master key found, please initialize a new one".into())
-        }
+        false => Err("No master key found, please initialize a new one".into()),
     }
 }
