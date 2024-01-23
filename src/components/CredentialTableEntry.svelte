@@ -5,6 +5,10 @@
   import Hide from "./icons/Hide.svelte";
   import Show from "./icons/Show.svelte";
   import { type Credential } from "@/types/Credential";
+  import type { Login } from "@/types/Login";
+  import { State } from "@/enums/State";
+  import { sharedStateStore } from "@/stores/sharedStateStore";
+  import { invoke } from "@tauri-apps/api/tauri";
 
   enum passwordToooltip {
     show = "Show password",
@@ -24,12 +28,17 @@
 
   let shownCredentials = credentials;
 
-  shownCredentials = shownCredentials.map((credential) => {
-    return {
-      ...credential,
-      pass: "********",
-    };
-  });
+  function updateShownCredentials() {
+    shownCredentials = credentials;
+    shownCredentials = shownCredentials.map((credential) => {
+      return {
+        ...credential,
+        pass: "********",
+      };
+    });
+  }
+
+  updateShownCredentials();
 
   let hidden: boolean = true;
 
@@ -41,6 +50,7 @@
       showPasswordTooltip = passwordToooltip.hide;
     }
     let index = shownCredentials.findIndex(
+      //!TODO fix this, if you have two credentials with the same email and username, it will show the password of the first one
       (shownCredential) =>
         shownCredential.email === credential.email &&
         shownCredential.usr === credential.usr
@@ -62,15 +72,28 @@
     copyPasswordTooltip = copyPasswordToooltip.copied;
   }
 
-  function filterCredentials(event: CustomEvent) {
-    let filter: Credential = (event.detail as Credential);
-    shownCredentials = credentials.filter((credential) => {
-      return (
-        credential.email.includes(filter.email) &&
-        credential.usr.includes(filter.usr) &&
-        credential.pass.includes(filter.pass)
-      );
+  async function filterCredentials(event: CustomEvent) {
+    let filter: Credential = event.detail as Credential;
+    let login: Login = {
+      domain: domain,
+      credentials: [filter],
+    };
+
+    await invoke("delete_login", { login: login }).catch((err) => {
+      console.log(err);
     });
+
+    credentials = credentials.filter(
+      //!TODO fix this, if you have two credentials with the same email and username, it will delete both
+      (credential) =>
+        credential.email !== filter.email &&
+        credential.usr !== filter.usr &&
+        credential.pass !== filter.pass
+    );
+
+    sharedStateStore.set(State.RELOAD);
+
+    updateShownCredentials();
   }
 </script>
 
@@ -178,10 +201,7 @@
     <td class="h-px w-px whitespace-nowrap">
       <div class="px-6 py-1.5">
         <span class="mr-2">
-          <DeleteModal
-            {credential}
-            on:delete={filterCredentials}
-          />
+          <DeleteModal {credential} on:delete={filterCredentials} />
         </span>
         <a
           class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"

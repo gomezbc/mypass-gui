@@ -14,6 +14,7 @@ fn main() {
             commands::get_logins,
             commands::check_master_key,
             commands::add_login,
+            commands::delete_login,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

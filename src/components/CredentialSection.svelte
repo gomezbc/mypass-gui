@@ -11,37 +11,30 @@
 
   let isLocked: boolean = true;
 
-  async function getLogins(): Promise<Login[]> {
-    let logins = (await invoke("get_logins")) as Login[];
-    loginsNum = logins.reduce(
-      (acc, login) => acc + numOfcredentialsInLogin(login),
-      0
-    );
-    return logins;
-  }
-
   let logins: Login[] = [];
   let numOfcredentialsInLogin = (login: Login) => login.credentials.length;
   let loginsNum: number = 0;
   let isLoading = false;
 
-  function loadLogins() {
+  async function loadLogins() {
     isLoading = true;
-    getLogins().then((result) => {
-      logins = result;
-      isLoading = false;
-    });
+    logins = (await invoke("get_logins")) as Login[];
+    loginsNum = logins.reduce(
+      (acc, login) => acc + numOfcredentialsInLogin(login),
+      0
+    );
+    isLoading = false;
   }
 
-  sharedStateStore.subscribe((value) => {
+  sharedStateStore.subscribe(async (value) => {
     switch (value) {
       case State.RELOAD:
         isLocked = false;
-        loadLogins();
+        await loadLogins();
         break;
       case State.UNLOCKED:
         isLocked = false;
-        loadLogins();
+        await loadLogins();
         break;
       case State.LOCKED:
         isLocked = true;
