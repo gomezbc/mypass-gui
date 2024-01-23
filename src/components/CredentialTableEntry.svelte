@@ -61,6 +61,17 @@
     navigator.clipboard.writeText(credentials[index].pass);
     copyPasswordTooltip = copyPasswordToooltip.copied;
   }
+
+  function filterCredentials(event: CustomEvent) {
+    let filter: Credential = (event.detail as Credential);
+    shownCredentials = credentials.filter((credential) => {
+      return (
+        credential.email.includes(filter.email) &&
+        credential.usr.includes(filter.usr) &&
+        credential.pass.includes(filter.pass)
+      );
+    });
+  }
 </script>
 
 {#each shownCredentials as credential}
@@ -167,7 +178,10 @@
     <td class="h-px w-px whitespace-nowrap">
       <div class="px-6 py-1.5">
         <span class="mr-2">
-          <DeleteModal />
+          <DeleteModal
+            {credential}
+            on:delete={filterCredentials}
+          />
         </span>
         <a
           class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
