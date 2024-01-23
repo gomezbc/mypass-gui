@@ -8,6 +8,7 @@
   let connectBtnMsg: String = "Connect";
 
   function connect() {
+    resMsg = "";
     connecting = true;
     connectBtnMsg = "Connecting...";
     invoke("connect_to_db", { inputUri: uri }).then((res) => {
