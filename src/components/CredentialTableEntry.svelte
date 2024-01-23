@@ -1,13 +1,26 @@
 <script lang="ts">
+  import DeleteModal from "./DeleteModal.svelte";
+  import Copied from "./icons/Copied.svelte";
   import Copy from "./icons/Copy.svelte";
+  import Hide from "./icons/Hide.svelte";
   import Show from "./icons/Show.svelte";
   import { type Credential } from "@/types/Credential";
+
+  enum passwordToooltip {
+    show = "Show password",
+    hide = "Hide password",
+  }
+
+  enum copyPasswordToooltip {
+    copy = "Copy to clipboard",
+    copied = "Copied!",
+  }
 
   export let domain: string;
   export let credentials: Credential[];
 
-  let copyPasswordTooltip: string = "Copy password";
-  let showPasswordTooltip: string = "Show password";
+  let copyPasswordTooltip: string = copyPasswordToooltip.copy;
+  let showPasswordTooltip: string = passwordToooltip.show;
 
   let shownCredentials = credentials;
 
@@ -23,9 +36,9 @@
   function showPassword(credential: Credential) {
     hidden = !hidden;
     if (hidden) {
-      showPasswordTooltip = "Show password";
+      showPasswordTooltip = passwordToooltip.show;
     } else {
-      showPasswordTooltip = "Hide password";
+      showPasswordTooltip = passwordToooltip.hide;
     }
     let index = shownCredentials.findIndex(
       (shownCredential) =>
@@ -46,7 +59,7 @@
         shownCredential.usr === credential.usr
     );
     navigator.clipboard.writeText(credentials[index].pass);
-    copyPasswordTooltip = "Copied!";
+    copyPasswordTooltip = copyPasswordToooltip.copied;
   }
 </script>
 
@@ -103,8 +116,13 @@
             <button
               on:click={() => showPassword(credential)}
               class="ml-2 text-black/70 dark:text-white"
-              ><Show className="size-6" /></button
             >
+              {#if showPasswordTooltip === passwordToooltip.show}
+                <Show className="size-6" />
+              {:else}
+                <Hide className="size-6" />
+              {/if}
+            </button>
           </span>
         </div>
         <div>
@@ -131,11 +149,16 @@
             </div>
             <button
               on:click={() => copyPassword(credential)}
-              on:mouseout={() => (copyPasswordTooltip = "Copy password")}
-              on:blur={() => (copyPasswordTooltip = "Copy password")}
+              on:mouseout={() =>
+                (copyPasswordTooltip = copyPasswordToooltip.copy)}
+              on:blur={() => (copyPasswordTooltip = copyPasswordToooltip.copy)}
               class="ml-2 text-black/70 dark:text-white"
             >
-              <Copy className="size-5" />
+              {#if copyPasswordTooltip === copyPasswordToooltip.copy}
+                <Copy className="size-6" />
+              {:else}
+                <Copied className="size-6" />
+              {/if}
             </button>
           </span>
         </div>
