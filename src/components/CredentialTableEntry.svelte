@@ -51,9 +51,7 @@
     }
     let index = shownCredentials.findIndex(
       //!TODO fix this, if you have two credentials with the same email and username, it will show the password of the first one
-      (shownCredential) =>
-        shownCredential.email === credential.email &&
-        shownCredential.usr === credential.usr
+      (shownCredential) => shownCredential.id === credential.id
     );
     if (hidden) {
       shownCredentials[index].pass = "********";
@@ -64,9 +62,7 @@
 
   function copyPassword(credential: Credential) {
     let index = shownCredentials.findIndex(
-      (shownCredential) =>
-        shownCredential.email === credential.email &&
-        shownCredential.usr === credential.usr
+      (shownCredential) => shownCredential.id === credential.id
     );
     navigator.clipboard.writeText(credentials[index].pass);
     copyPasswordTooltip = copyPasswordToooltip.copied;
@@ -85,10 +81,7 @@
 
     credentials = credentials.filter(
       //!TODO fix this, if you have two credentials with the same email and username, it will delete both
-      (credential) =>
-        credential.email !== filter.email &&
-        credential.usr !== filter.usr &&
-        credential.pass !== filter.pass
+      (credential) => credential.id != filter.id
     );
 
     sharedStateStore.set(State.RELOAD);

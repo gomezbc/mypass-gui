@@ -4,6 +4,7 @@
   import type { Login } from "@/types/Login";
   import { invoke } from "@tauri-apps/api";
   import { Button, Modal, Label, Input } from "flowbite-svelte";
+  import { v4 as uuidv4 } from "uuid";
 
   let formModal = false;
   export let disableButtons: boolean;
@@ -14,6 +15,7 @@
       domain: (event.target as HTMLFormElement).domain.value,
       credentials: [
         {
+          id: uuidv4(),
           email: (event.target as HTMLFormElement).email.value,
           usr: (event.target as HTMLFormElement).username.value,
           pass: (event.target as HTMLFormElement).password.value,

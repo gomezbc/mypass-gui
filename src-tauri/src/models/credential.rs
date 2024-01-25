@@ -1,18 +1,20 @@
 use std::fmt;
 
-use mongodb::bson::{Bson, bson};
+use mongodb::bson::{bson, Bson};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Credential {
+    pub id: String,
     pub email: String,
     pub usr: String,
     pub pass: String,
 }
 
 impl Credential {
-    pub fn new(email: &str, usr: &str, pass: &str) -> Credential {
+    pub fn new(id: &str, email: &str, usr: &str, pass: &str) -> Credential {
         Credential {
+            id: String::from(id),
             email: String::from(email),
             usr: String::from(usr),
             pass: String::from(pass),
@@ -30,6 +32,7 @@ impl Credential {
 impl Into<Bson> for Credential {
     fn into(self) -> Bson {
         bson!({
+            "id": self.id,
             "email": self.email,
             "usr": self.usr,
             "pass": self.pass

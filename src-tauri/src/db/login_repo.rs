@@ -74,11 +74,17 @@ impl LoginRepository {
         Ok(())
     }
 
-    pub async fn delete(&self, login: Login) -> Result<(), Box<dyn Error>> {
+    pub async fn delete_credential(&self, login: Login) -> Result<(), Box<dyn Error>> {
         let credential = login.credentials[0].clone();
         let filter = doc! {"domain": login.domain, "credentials.email": credential.email.as_str(), "credentials.usr": credential.usr.as_str()};
         let update = doc! {"$pull": {"credentials": {"email": credential.email.as_str(), "usr": credential.usr.as_str()}}};
         self.collection.update_one(filter, update, None).await?;
+        Ok(())
+    }
+
+    pub async fn delete_login(&self, login: Login) -> Result<(), Box<dyn Error>> {
+        let filter = doc! {"domain": login.domain};
+        self.collection.delete_one(filter, None).await?;
         Ok(())
     }
 
