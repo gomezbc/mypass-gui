@@ -18,7 +18,7 @@
       .then((result) => {
         if (result === true) {
           isPasswordCorrect = true;
-          sharedStateStore.set(State.UNLOCKED);
+          sharedStateStore.set(State.UNLOCK);
         } else {
           isPasswordCorrect = false;
         }

@@ -28,15 +28,23 @@
 
   sharedStateStore.subscribe(async (value) => {
     switch (value) {
-      case State.RELOAD:
+      case State.REFRESH:
         isLocked = false;
         await loadLogins();
         break;
-      case State.UNLOCKED:
+      case State.UNLOCK:
         isLocked = false;
         await loadLogins();
         break;
-      case State.LOCKED:
+      case State.ADD:
+        isLocked = false;
+        await loadLogins();
+        break;
+      case State.DELETE:
+        isLocked = false;
+        await loadLogins();
+        break;
+      case State.LOCK:
         isLocked = true;
         logins = [];
         break;

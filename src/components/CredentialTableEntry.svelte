@@ -84,7 +84,7 @@
       (credential) => credential.id != filter.id
     );
 
-    sharedStateStore.set(State.RELOAD);
+    sharedStateStore.set(State.DELETE);
 
     updateShownCredentials();
   }

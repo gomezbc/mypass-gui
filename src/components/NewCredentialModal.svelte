@@ -25,8 +25,7 @@
     invoke("add_login", { login: login })
       .then((result) => {
         formModal = false;
-        sharedStateStore.set(State.RELOAD);
-        console.log(result);
+        sharedStateStore.set(State.ADD);
       })
       .catch((err) => {
         console.log(err);
