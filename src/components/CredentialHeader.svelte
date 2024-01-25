@@ -1,5 +1,8 @@
 <script lang="ts">
+  import { sharedStateStore } from "@/stores/sharedStateStore";
   import NewCredentialModal from "./NewCredentialModal.svelte";
+  import Refresh from "./icons/Refresh.svelte";
+  import { State } from "@/enums/State";
   export let disableButtons: boolean;
 </script>
 
@@ -17,13 +20,18 @@
 
   <div>
     <div class="inline-flex gap-x-2">
-      <a
+      <!-- svelte-ignore a11y-invalid-attribute -->
+      <button
         class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-        href="#"
+        disabled={disableButtons}
+        on:click={() => {
+          sharedStateStore.set(State.RELOAD);
+        }}
       >
-        View all
-      </a>
-      <NewCredentialModal disableButtons={disableButtons}/>
+        <Refresh className="flex-shrink-0 size-4" />
+        <span>Refresh</span>
+      </button>
+      <NewCredentialModal {disableButtons} />
     </div>
   </div>
 </div>
