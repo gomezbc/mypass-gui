@@ -13,6 +13,14 @@ pub async fn insert_login(login: Login) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+pub async fn update_credential(login: Login) -> Result<(), Box<dyn Error>> {
+    let login_repo = LoginRepository::init().await?;
+    let mut login = login;
+    login.domain = login.domain.to_lowercase();
+    login_repo.update(login).await?;
+    Ok(())
+}
+
 pub async fn remove_credential(
     domain: &str,
     credential: &Credential,

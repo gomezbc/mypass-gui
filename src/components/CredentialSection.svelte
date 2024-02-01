@@ -40,6 +40,10 @@
         isLocked = false;
         await loadLogins();
         break;
+      case State.UPDATE:
+        isLocked = false;
+        await loadLogins();
+        break;
       case State.DELETE:
         isLocked = false;
         await loadLogins();

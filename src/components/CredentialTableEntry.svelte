@@ -9,6 +9,7 @@
   import { State } from "@/enums/State";
   import { sharedStateStore } from "@/stores/sharedStateStore";
   import { invoke } from "@tauri-apps/api/tauri";
+  import EditCredentialModal from "./EditCredentialModal.svelte";
 
   enum passwordToooltip {
     show = "Show password",
@@ -87,6 +88,14 @@
     sharedStateStore.set(State.DELETE);
 
     updateShownCredentials();
+  }
+
+  function getPlainCredential(credential: Credential): Credential {
+    let cred = credentials.find((cred) => cred.id === credential.id);
+    if (cred != undefined) {
+      return cred;
+    }
+    return credential;
   }
 </script>
 
@@ -196,12 +205,9 @@
         <span class="mr-2">
           <DeleteModal {credential} on:delete={filterCredentials} />
         </span>
-        <a
-          class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-          href="#"
-        >
-          Edit
-        </a>
+        <span>
+          <EditCredentialModal credential={getPlainCredential(credential)} {domain} />
+        </span>
       </div>
     </td>
   </tr>

@@ -4,7 +4,7 @@ use crate::{
     db::connection::get_db_client,
     models::login::Login,
     services::{
-        login_service::{insert_login, remove_credential},
+        login_service::{insert_login, remove_credential, update_credential},
         master_key_service::check_key,
     },
     utils::pass_manager::{encrypt_passwd, get_plain_credentials},
@@ -80,6 +80,22 @@ pub async fn delete_login(login: Login) -> Result<(), String> {
     let res = remove_credential(login.domain.as_str(), &login.credentials[0])
         .await
         .map_err(|_| Into::<String>::into("Error deleting login"));
+    if res.is_err() {
+        return Err(res.unwrap_err());
+    }
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn update_login(login: Login) -> Result<(), String> {
+    let master_key = MASTER_KEY.lock().unwrap().clone();
+    let mut login = login.clone();
+    let plain_pass = login.credentials[0].pass.clone();
+    let encrypted_pass = encrypt_passwd(plain_pass.as_str(), master_key.as_str());
+    login.credentials[0].pass = encrypted_pass;
+    let res = update_credential(login)
+        .await
+        .map_err(|_| Into::<String>::into("Error updating login"));
     if res.is_err() {
         return Err(res.unwrap_err());
     }

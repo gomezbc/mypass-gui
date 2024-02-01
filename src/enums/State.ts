@@ -3,5 +3,6 @@ export enum State {
     UNLOCK,
     ADD,
     DELETE,
+    UPDATE,
     REFRESH,
 }
