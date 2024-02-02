@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Layout from '../components/layouts/+layout.svelte';
-	import CredentialSection from '../components/CredentialSection.svelte';
+	import Layout from '../../components/layouts/+layout.svelte';
+	import CredentialSection from '../../components/CredentialSection.svelte';
 </script>
 
 <Layout title="Home page">
