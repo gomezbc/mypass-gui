@@ -1,0 +1,77 @@
+{
+  ".svelte-kit/generated/server/internal.js": {
+    "file": "internal.js",
+    "imports": [
+      "_internal.js"
+    ],
+    "isEntry": true,
+    "src": ".svelte-kit/generated/server/internal.js"
+  },
+  "_exports.js": {
+    "file": "chunks/exports.js"
+  },
+  "_internal.js": {
+    "file": "chunks/internal.js",
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "_ssr.js": {
+    "file": "chunks/ssr.js"
+  },
+  "node_modules/@fontsource-variable/onest/files/onest-cyrillic-wght-normal.woff2": {
+    "file": "_app/immutable/assets/onest-cyrillic-wght-normal.okE7jKFK.woff2",
+    "src": "node_modules/@fontsource-variable/onest/files/onest-cyrillic-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/onest/files/onest-latin-ext-wght-normal.woff2": {
+    "file": "_app/immutable/assets/onest-latin-ext-wght-normal.NATBPiDw.woff2",
+    "src": "node_modules/@fontsource-variable/onest/files/onest-latin-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/onest/files/onest-latin-wght-normal.woff2": {
+    "file": "_app/immutable/assets/onest-latin-wght-normal.ycwkluYs.woff2",
+    "src": "node_modules/@fontsource-variable/onest/files/onest-latin-wght-normal.woff2"
+  },
+  "node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "imports": [
+      "_ssr.js",
+      "_exports.js"
+    ],
+    "isEntry": true,
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/error.svelte"
+  },
+  "node_modules/@sveltejs/kit/src/runtime/components/layout.svelte": {
+    "file": "entries/fallbacks/layout.svelte.js",
+    "imports": [
+      "_ssr.js"
+    ],
+    "isEntry": true,
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/layout.svelte"
+  },
+  "node_modules/@sveltejs/kit/src/runtime/server/index.js": {
+    "file": "index.js",
+    "imports": [
+      "_internal.js",
+      "_exports.js",
+      "_ssr.js"
+    ],
+    "isEntry": true,
+    "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js"
+  },
+  "src/routes/+page.svelte": {
+    "assets": [
+      "_app/immutable/assets/onest-cyrillic-wght-normal.okE7jKFK.woff2",
+      "_app/immutable/assets/onest-latin-ext-wght-normal.NATBPiDw.woff2",
+      "_app/immutable/assets/onest-latin-wght-normal.ycwkluYs.woff2"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.xJ4zAq58.css"
+    ],
+    "file": "entries/pages/_page.svelte.js",
+    "imports": [
+      "_ssr.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/+page.svelte"
+  }
+}

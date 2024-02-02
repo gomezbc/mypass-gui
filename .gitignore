@@ -3,7 +3,6 @@ dist/
 
 # svelte
 /build
-/.svelte-kit
 /package
 !.env.example
 vite.config.js.timestamp-*
