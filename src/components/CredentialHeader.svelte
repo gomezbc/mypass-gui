@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { sharedStateStore } from "@/stores/sharedStateStore";
+  import { sharedStateStore } from "../stores/sharedStateStore";
   import NewCredentialModal from "./NewCredentialModal.svelte";
   import Refresh from "./icons/Refresh.svelte";
-  import { State } from "@/enums/State";
+  import { State } from "../enums/State";
   export let disableButtons: boolean;
 </script>
 

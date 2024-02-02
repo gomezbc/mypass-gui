@@ -4,10 +4,10 @@
   import Copy from "./icons/Copy.svelte";
   import Hide from "./icons/Hide.svelte";
   import Show from "./icons/Show.svelte";
-  import { type Credential } from "@/types/Credential";
-  import type { Login } from "@/types/Login";
-  import { State } from "@/enums/State";
-  import { sharedStateStore } from "@/stores/sharedStateStore";
+  import { type Credential } from "../types/Credential";
+  import type { Login } from "../types/Login";
+  import { State } from "../enums/State";
+  import { sharedStateStore } from "../stores/sharedStateStore";
   import { invoke } from "@tauri-apps/api/tauri";
   import EditCredentialModal from "./EditCredentialModal.svelte";
 

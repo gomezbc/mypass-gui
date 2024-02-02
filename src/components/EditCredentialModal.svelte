@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { State } from "@/enums/State";
-  import { sharedStateStore } from "@/stores/sharedStateStore";
-  import type { Login } from "@/types/Login";
+  import { State } from "../enums/State";
+  import { sharedStateStore } from "../stores/sharedStateStore";
+  import type { Login } from "../types/Login";
   import { invoke } from "@tauri-apps/api";
   import { Button, Modal, Label, Input, type InputType } from "flowbite-svelte";
-  import type { Credential } from "@/types/Credential";
+  import type { Credential } from "../types/Credential";
   import Edit from "./icons/Edit.svelte";
 
   let formModal = false;

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button, Modal } from "flowbite-svelte";
   import { createEventDispatcher } from "svelte";
-  import type { Credential } from "@/types/Credential";
+  import type { Credential } from "../types/Credential";
   import Trash from "./icons/Trash.svelte";
   import Warning from "./icons/Warning.svelte";
   export let credential: Credential;

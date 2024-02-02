@@ -3,8 +3,8 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import Lock from "./icons/Lock.svelte";
   import Unlock from "./icons/Unlock.svelte";
-  import { sharedStateStore } from "@/stores/sharedStateStore";
-  import { State } from "@/enums/State";
+  import { sharedStateStore } from "../stores/sharedStateStore";
+  import { State } from "../enums/State";
 
   let unlocking: boolean = false;
   let isPasswordCorrect: boolean = true;

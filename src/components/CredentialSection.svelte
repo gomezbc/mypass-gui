@@ -4,10 +4,10 @@
   import CredentialHeader from "./CredentialHeader.svelte";
   import CredentialTable from "./CredentialTable.svelte";
 
-  import { type Login } from "@/types/Login";
+  import { type Login } from "../types/Login";
   import CredentialUnlock from "./CredentialUnlock.svelte";
-  import { sharedStateStore } from "@/stores/sharedStateStore";
-  import { State } from "@/enums/State";
+  import { sharedStateStore } from "../stores/sharedStateStore";
+  import { State } from "../enums/State";
 
   let isLocked: boolean = true;
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import CredentialTableEntry from "./CredentialTableEntry.svelte";
-  import { type Login } from "@/types/Login";
+  import { type Login } from "../types/Login";
   export let logins: Login[] = [];
 </script>
 

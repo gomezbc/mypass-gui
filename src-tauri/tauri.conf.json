@@ -2,8 +2,8 @@
   "build": {
     "beforeBuildCommand": "bun run build",
     "beforeDevCommand": "bun run dev",
-    "devPath": "http://localhost:4321",
-    "distDir": "../dist"
+    "devPath": "http://localhost:5173",
+    "distDir": "../build"
   },
   "package": {
     "productName": "mypass-gui",

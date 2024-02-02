@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { State } from "@/enums/State";
-  import { sharedStateStore } from "@/stores/sharedStateStore";
-  import type { Login } from "@/types/Login";
+  import { State } from "../enums/State";
+  import { sharedStateStore } from "../stores/sharedStateStore";
+  import type { Login } from "../types/Login";
   import { invoke } from "@tauri-apps/api";
   import { Button, Modal, Label, Input, type InputType } from "flowbite-svelte";
   import { v4 as uuidv4 } from "uuid";
