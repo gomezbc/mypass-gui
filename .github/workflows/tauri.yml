@@ -1,4 +1,4 @@
-name: 'publish'
+name: "publish"
 
 # This will trigger the action on each push to the `release` branch.
 on:
@@ -32,16 +32,27 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+          curl -fsSL https://bun.sh/install | bash
+
+      - name: install dependencies (macos only)
+        if: matrix.platform == 'macos-latest'
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+
+      - name: install dependencies (windows only)
+        if: matrix.platform == 'windows-latest'
+        run: |
+          powershell -c "irm bun.sh/install.ps1|iex"
 
       - name: install frontend dependencies
-        run: yarn install # change this to npm or pnpm depending on which one you use
+        run: bun install # change this to npm or pnpm depending on which one you use
 
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: MyPass-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: 'MyPass v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          releaseName: "MyPass v__VERSION__"
+          releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false
