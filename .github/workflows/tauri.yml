@@ -32,22 +32,21 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-          curl -fsSL https://get.pnpm.io/install.sh | sh -
-          $SHELL
+          npm install --global yarn
 
       - name: install dependencies (macos only)
         if: matrix.platform == 'macos-latest'
         run: |
           curl -fsSL https://get.pnpm.io/install.sh | sh -
-          $SHELL
+          npm install --global yarn
 
       - name: install dependencies (windows only)
         if: matrix.platform == 'windows-latest'
         run: |
-          iwr https://get.pnpm.io/install.ps1 -useb | iex
+          npm install --global yarn
 
       - name: install frontend dependencies
-        run: pnpm install # change this to npm or pnpm depending on which one you use
+        run: yarn install # change this to npm or pnpm depending on which one you use
 
       - uses: tauri-apps/tauri-action@v0
         env:
