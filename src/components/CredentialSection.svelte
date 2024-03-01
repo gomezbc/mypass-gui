@@ -18,11 +18,15 @@
 
   async function loadLogins() {
     isLoading = true;
-    logins = (await invoke("get_logins")) as Login[];
-    loginsNum = logins.reduce(
-      (acc, login) => acc + numOfcredentialsInLogin(login),
-      0
-    );
+    async function fetchLogins() {
+      logins = (await invoke("get_logins")) as Login[];
+      loginsNum = logins.reduce(
+        (acc, login) => acc + numOfcredentialsInLogin(login),
+        0
+      );
+    }
+
+    await fetchLogins();
     isLoading = false;
   }
 
