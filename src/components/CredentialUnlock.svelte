@@ -13,7 +13,6 @@
     event.preventDefault();
     unlocking = true;
     let password = (event.target as HTMLFormElement).password.value;
-    console.log(password);
     await invoke("check_master_key", { key: password })
       .then((result) => {
         if (result === true) {
